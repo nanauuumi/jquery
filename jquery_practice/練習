@@ -1,0 +1,35 @@
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<title>divパズルlv2</title>
+	<link rel="stylesheet" href="common.css">
+</head>
+<body>
+	<div class="wrapper">
+		<div class="redbox>
+		<!--  end of .header -->
+		</div>
+		<div class="main clearfix">
+			<div class="bluebox">
+			</div>
+			<div class="content">
+				<div class="contet-top clearfix">
+					<div class="content-top-left">
+						<div class="yellowbox"></div>
+						<div class="greenbox"></div>
+					</div>
+					<div class="rigtbluebox">
+					</div>
+				</div>
+				<div class="redbox">
+				</div>
+			</div>
+		<!--  end of .main -->
+		</div>
+		<div class="footer">
+		<!--  end of .footer -->
+		</div>
+	<!--  end of .wrapper -->
+	</div>
+</body>
+</html>
