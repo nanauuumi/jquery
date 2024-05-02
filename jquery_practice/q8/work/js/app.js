@@ -63,42 +63,40 @@ $(function(){
       $(".message").remove();
     });
 
-
     //CiNiiと通信成功した時の挙動
     function displayResults(result){
       //エラーを含めた表示内容のリセット
       $(".message").remove();
       //resultの中身があるときに処理
-      if(result && result.length > 0) {
-        //最大でも1度で20個までしか取得しない設定ため、余裕をもって30回ループを実施(pageCountの箇所)
-        for(var i=0; i < 30; i++){
-          //mapで取得した内容を新たに配列に当てはめて、情報を格納
-          const addContents = result.map(item => ({
-            title: item.items[i].title || "タイトル不明",
-            author: item.items[i]["dc:creator"] || "作者不明",
-            publisher: item.items[i]["dc:publisher"] || "出版社不明",
-            link: item.items[i].link["@id"], 
-            items: item.items[i]
-          }));
-          //配列が存在していた場合に、配列の要素を取得してリストとして表示
-          if(addContents.length > 0){
-            $.each(addContents, function(i,item){
-              const list = `<li class="lists-item list-inner">
-                <p>タイトル：${item.title}</p>
-                <p>作者：${item.author}</p>
-                <p>出版社：${item.publisher}</p>
-                <a href="${item.link}" target="_blank">書籍情報</a>
-            </li>`;
-            $(".lists").prepend(list);
-            });
-            //配列が存在していない場合は、エラーの表示
-          } else{
-            $(".lists").before('<div class="message">正常に通信できませんでした。<br>インターネットの接続の確認をしてください。</div>');
-          }
+      if(result.length > 0) {
+        //取得した配列[@graph]からキー：itemsの値を取得して代入
+        const addContents = result.map(function(value){
+          return value["items"];
+        });
+        //キー：itemsで取得できた場合は「true」処理、何も取得できなかった場合は「false」処理
+        if(addContents[0]){
+          //最大でも1度で20個までしか取得しない設定ため、20回ループを実施(pageCountの箇所)
+          for(var i = 0; i < 20; i++){
+            const list = `<li class="lists-item list-inner">
+                    <p>タイトル：${addContents[0][i].title || "タイトル不明"}</p>
+                    <p>作者：${addContents[0][i]["dc:creator"] || "作者不明"}</p>
+                    <p>出版社：${addContents[0][i]["dc:publisher" || "出版社不明"]}</p>
+                    <a href="${addContents[0][i].link["@id"]}" target="_blank">書籍情報</a>
+                </li>`;
+                $(".lists").prepend(list);
         }
+        }else{
+          $(".message").remove();
+          $(".lists").empty();
+          $(".lists").before('<div class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索して下さい。</div>');
+        }
+      //配列が存在していない場合は、エラーの表示
+      }else{
+        $(".message").remove();
+        $(".lists").empty();
+        $(".lists").before('<div class="message">正常に通信できませんでした。<br>インターネットの接続の確認をしてください。</div>');
       }
     }
-
     //通信が失敗した時の挙動
     function displayError(err) {
       $(".lists").before('<div class="message">正常に通信できませんでした。<br>インターネットの接続の確認をしてください。</div>');

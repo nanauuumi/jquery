@@ -55,6 +55,10 @@ $(function () {
 
     //購買情報
     console.log('購買情報');
-    console.log($('[name=subscription]:checked').val());
+    var subscription = $('[name=subscription]:checked').map(function(){
+      return $(this).val();
+    }).get();
+    for(var i = 0; i < subscription.length; i++)
+      console.log(subscription[i]);
   });
 });
