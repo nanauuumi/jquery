@@ -99,6 +99,7 @@ $(function(){
     }
     //通信が失敗した時の挙動
     function displayError(err) {
+      $(".message").remove();
       $(".lists").before('<div class="message">正常に通信できませんでした。<br>インターネットの接続の確認をしてください。</div>');
     }
 });
